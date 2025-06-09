@@ -125,11 +125,17 @@ public class PlayerShooting : MonoBehaviour
         // Berechne den Winkel für die Verteilung basierend auf maxTotalAngle
         float angleStep = count > 1 ? maxTotalAngle / (count - 1) : 0f; // Abstand zwischen den Kugeln in Grad
         float startAngle = -maxTotalAngle / 2; // Startwinkel für die erste Kugel
+        if (count == 1)
+        {
+            startAngle = 0f; // Wenn nur eine Kugel, dann kein Winkelversatz
+        }
 
         for (int i = 0; i < count; i++)
         {
             float angle = startAngle + i * angleStep;
+            float bulletDirection = startAngle + i * angleStep + 90; // Berechne den Winkel für die Kugel
             Quaternion fireRotation = firePoint.rotation * Quaternion.Euler(0, 0, angle);
+            Quaternion fireRotationBullet = fireRotation * Quaternion.Euler(0, 0, bulletDirection);
 
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, fireRotation);
             bullet.transform.localScale *= bulletSize; // Skalierung der Kugel basierend auf bulletSize
@@ -147,7 +153,7 @@ public class PlayerShooting : MonoBehaviour
                 else
                 {
                     rb.velocity = fireRotation * Vector2.up * bulletSpeed;
-                    bullet.transform.rotation = fireRotation;
+                    bullet.transform.rotation = fireRotationBullet;
                 }
 
                 bulletScript bulletScript = bullet.GetComponent<bulletScript>();
