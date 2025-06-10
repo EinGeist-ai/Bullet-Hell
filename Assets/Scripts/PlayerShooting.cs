@@ -19,7 +19,9 @@ public class PlayerShooting : MonoBehaviour
     private bool canShoot = true;
     private float currentFireRate = 1; // Adjusted fire rate based on upgrades
     private GameObject player; // Reference to the player for enemy targeting
+    public GameObject console;
 
+    
     void Start()
     {
         if (CompareTag("Player"))
@@ -36,7 +38,7 @@ public class PlayerShooting : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !console.activeSelf)
         {
             AutoFire = !AutoFire; // Toggle AutoFire mode
         }
@@ -46,11 +48,11 @@ public class PlayerShooting : MonoBehaviour
             ApplyUpgrades();
 
             // Player-controlled shooting
-            if (Input.GetButton("Fire1") && canShoot && !AutoFire)
+            if (Input.GetButton("Fire1") && canShoot && !AutoFire && !console.activeSelf)
             {
                 StartCoroutine(ShootCoroutine());
             }
-            else if (AutoFire && canShoot)
+            else if (AutoFire && canShoot && !console.activeSelf)
             {
                 // Auto fire when AutoFire is enabled
                 StartCoroutine(ShootCoroutine());

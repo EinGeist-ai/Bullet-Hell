@@ -25,6 +25,8 @@ public class SpawnEnemys : MonoBehaviour
     private float spawnIntervalFixed = 1.5f; // Timer für den Spawn
     public float bossTimer = 0f;
 
+    public bool spawningEnabled = true; // Flag, um das Spawnen zu aktivieren/deaktivieren
+
     public GameObject EnemyBoss;
 
     public float difficulty = 0.02f;
@@ -33,23 +35,21 @@ public class SpawnEnemys : MonoBehaviour
     {
         // Starte die Spawn-Coroutine
         StartCoroutine(SpawnEnemiesRepeatedly());
-        StartCoroutine(spawnBoss());
+        StartCoroutine(SpawnBoss());
     }
 
     void Update()
     {
-        // Starte die Boss-Spawn-Coroutine
-
+        
     }
-
     private IEnumerator SpawnEnemiesRepeatedly()
     {
         while (true)
         {
-            SpawnEnemyWithProbability();
-            yield return new WaitForSeconds(spawnInterval); // Warte die festgelegte Zeit
-            difficulty += 0.01f; // Erhöhe die Schwierigkeit (kann angepasst werden)
-            spawnInterval = Mathf.Max(0.0001f, spawnIntervalFixed / difficulty); // Verringere das Intervall, um die Schwierigkeit zu erhöhen
+                SpawnEnemyWithProbability();
+                yield return new WaitForSeconds(spawnInterval); // Warte die festgelegte Zeit
+                difficulty += 0.01f; // Erhöhe die Schwierigkeit (kann angepasst werden)
+                spawnInterval = Mathf.Max(0.0001f, spawnIntervalFixed / difficulty); // Verringere das Intervall, um die Schwierigkeit zu erhöhen
         }
     }
 
@@ -89,19 +89,22 @@ public class SpawnEnemys : MonoBehaviour
 
 
 
-    private IEnumerator spawnBoss()
+    private IEnumerator SpawnBoss()
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
-            bossTimer++;
-
-            if (bossTimer >= 25f)
+            if (EnemyBoss != null)
             {
+                yield return new WaitForSeconds(1f);
+                bossTimer++;
 
-                Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                Instantiate(EnemyBoss, spawnPoint.position, spawnPoint.rotation); // Angenommen, der Boss ist das erste Element in enemyPrefabs
-                bossTimer = 0f;
+                if (bossTimer >= 25f)
+                {
+
+                    Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+                    Instantiate(EnemyBoss, spawnPoint.position, spawnPoint.rotation); // Angenommen, der Boss ist das erste Element in enemyPrefabs
+                    bossTimer = 0f;
+                }
             }
         }
     }
@@ -157,6 +160,22 @@ public class SpawnEnemys : MonoBehaviour
             default:
                 Debug.LogWarning($"Unbekannter Spawn-Typ: {enemyType}");
                 break;
+        }
+    }
+
+    public void ToggleSpawning()
+    {
+        spawningEnabled = !spawningEnabled; // Umschalten des Spawning-Flags
+
+        if (spawningEnabled)
+        {
+            StartCoroutine(SpawnEnemiesRepeatedly());
+            StartCoroutine(SpawnBoss()); // Starte die Boss-Spawning Coroutine, falls sie nicht bereits läuft
+        }
+        else
+        {
+            StopCoroutine(SpawnEnemiesRepeatedly());
+            StopCoroutine(SpawnBoss()); // Stoppe die Boss-Spawning Coroutine
         }
     }
 }

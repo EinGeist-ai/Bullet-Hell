@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
     public float currentHealth; // Current health of the enemy
     public GameObject ExplosionPrefab;
     public AudioSource audioData; // Reference to the AudioSource component for sound effects
-    public CapsuleCollider2D collider; // Reference to the CapsuleCollider2D component
+    public CapsuleCollider2D capsuleColider; // Reference to the CapsuleCollider2D component
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component 
     private BoxCollider2D boxCollider; // Reference to the BoxCollider2D component
     private EnemyBehaviorShooter movementShooter; // Reference to the movement script if needed
@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = maxHealth; // Initialize current health to max health at the start
         audioData = GetComponent<AudioSource>(); // Correct initialization of the class-level variable
-        collider = GetComponent<CapsuleCollider2D>(); // Get the CapsuleCollider2D component
+        capsuleColider = GetComponent<CapsuleCollider2D>(); // Get the CapsuleCollider2D component
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
         boxCollider = GetComponent<BoxCollider2D>(); // Get the BoxCollider2D component
         movementShooter = GetComponent<EnemyBehaviorShooter>(); // Get the movement script if it exists
@@ -84,10 +84,10 @@ public class EnemyHealth : MonoBehaviour
         Debug.Log("Enemy has died!"); // Log death message
         // Here you can add more logic for enemy death, like playing an animation or dropping loot
         // For now, we will just destroy the enemy object
-        collider.enabled = false; // Disable the collider to prevent further collisions
+        capsuleColider.enabled = false; // Disable the capsuleColider to prevent further collisions
         if (boxCollider != null)          // Check if boxCollider exists
         {                               
-            boxCollider.enabled = false; // Disable the box collider to prevent further collisions
+            boxCollider.enabled = false; // Disable the box capsuleColider to prevent further collisions
         }
         if (shooting != null) // Check if shooting script exists
         {

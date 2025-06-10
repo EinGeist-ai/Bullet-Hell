@@ -10,8 +10,13 @@ public class Console : MonoBehaviour
     public GameObject ConsoleObject;
     public bool ConsoleActive = false;
 
+    public TMP_Text tMP_Text
+
+    [SerializeField] private SpawnEnemys spawnScript; // Reference to SpawnEnemys script
+
     private void Start()
     {
+
         if (ConsoleObject == null)
         {
             Debug.LogError("ConsoleObject ist nicht zugewiesen!");
@@ -29,12 +34,22 @@ public class Console : MonoBehaviour
             Debug.LogError("TMP_Text ist nicht zugewiesen!");
             return;
         }
+
+        if (spawnScript == null)
+        {
+            spawnScript = GameObject.Find("EnemySpawner").GetComponent<SpawnEnemys>();
+            if (spawnScript == null)
+            {
+                Debug.LogError("SpawnEnemys-Skript konnte nicht gefunden werden!");
+            }
+        }
     }
 
     private void Update()
     {
 
         SendCommand();
+
     }
 
     public void SendCommand()
@@ -77,6 +92,10 @@ public class Console : MonoBehaviour
                 break;
             case "help":
                 Debug.Log("Available commands: clear, help"); // Zeigt verfügbare Befehle an
+                break;
+            case "spawnToggle":
+                spawnScript.ToggleSpawning();
+                Debug.Log("Spawn toggled."); // Beispielausgabe
                 break;
             default:
                 Debug.Log("Unknown command: '" + firstWord + "'"); // Zeigt unbekannte Befehle an

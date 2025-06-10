@@ -8,7 +8,7 @@ public class ContactDamage : MonoBehaviour
     public float damage = 1f; // Damage amount
     public GameObject ExplosionPrefab;
     public AudioSource audioData;
-    public CapsuleCollider2D collider; // Reference to the CapsuleCollider2D component
+    public CapsuleCollider2D capsuleColider; // Reference to the CapsuleCollider2D component
     private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
@@ -16,11 +16,11 @@ public class ContactDamage : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         audioData = GetComponent<AudioSource>();
-        collider = GetComponent<CapsuleCollider2D>(); // Get the CapsuleCollider2D component
+        capsuleColider = GetComponent<CapsuleCollider2D>(); // Get the CapsuleCollider2D component
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
     }
 
-    // OnCollisionEnter2D is called when this collider/rigidbody has begun touching another rigidbody/collider
+    // OnCollisionEnter2D is called when this capsuleColider/rigidbody has begun touching another rigidbody/capsuleColider
     void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
@@ -38,7 +38,7 @@ public class ContactDamage : MonoBehaviour
 
             }
             spriteRenderer.enabled = false; // Disable the sprite renderer to hide the enemy
-            collider.enabled = false; // Disable the collider to prevent further collisions
+            capsuleColider.enabled = false; // Disable the capsuleColider to prevent further collisions
             Destroy(gameObject, audioData.clip.length); // Destroy the enemy after dealing damage
         }
     }

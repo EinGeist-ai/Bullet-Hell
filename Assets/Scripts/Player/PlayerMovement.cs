@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 currentVelocity;
     private Quaternion playerRotation;
     public bool AutoFire = false; // For player shooting behavior
+    public GameObject console;
 
     void Start()
     {
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !console.activeSelf)
         {
             AutoFire = !AutoFire; // Toggle AutoFire mode
         }
@@ -40,15 +41,19 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = playerUpgrades.speedIncrease; // Adjust speed based on flat addition
         }
-        MoveCrosshair();
+        if(!console.activeSelf)
+        {
+            MoveCrosshair(); 
+        }
+        
 
         float moveX = 0f;
         float moveY = 0f;
 
-        if (Input.GetKey(KeyCode.A)) moveX = -1f;
-        if (Input.GetKey(KeyCode.D)) moveX = 1f;
-        if (Input.GetKey(KeyCode.W)) moveY = 1f;
-        if (Input.GetKey(KeyCode.S)) moveY = -1f;
+        if (Input.GetKey(KeyCode.A) && !console.activeSelf) moveX = -1f;
+        if (Input.GetKey(KeyCode.D) && !console.activeSelf) moveX = 1f;
+        if (Input.GetKey(KeyCode.W) && !console.activeSelf) moveY = 1f;
+        if (Input.GetKey(KeyCode.S) && !console.activeSelf) moveY = -1f;
 
         movementInput = new Vector2(moveX, moveY).normalized;
 
@@ -93,20 +98,6 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, playerRotation, Time.deltaTime * 20f);
         }
     }
-
-    /*private void AutoFireAtEnemy()
-    {
-        GameObject closestEnemy = FindClosestEnemy();
-        if (closestEnemy != null)
-        {
-            // Assuming PlayerShooting has a method to shoot
-            PlayerShooting playerShooting = GetComponent<PlayerShooting>();
-            if (playerShooting != null)
-            {
-                playerShooting.ShootAtTarget(closestEnemy.transform.position);
-            }
-        }
-    }*/
 
     private GameObject FindClosestEnemy()
     {

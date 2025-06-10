@@ -9,12 +9,12 @@ public class bulletScript : MonoBehaviour
     public AudioSource audioSource;
     private Rigidbody2D _rb;
     public SpriteRenderer spriteRenderer; 
-    public CapsuleCollider2D collider;
+    public CapsuleCollider2D capsuleColider;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<CapsuleCollider2D>();
+        capsuleColider = GetComponent<CapsuleCollider2D>();
         audioSource = GetComponent<AudioSource>();
         Destroy(gameObject, 10f);
 
@@ -81,7 +81,7 @@ public class bulletScript : MonoBehaviour
                 audioSource.Play(); // Abspielen des Sounds
                 _rb.velocity = Vector2.zero; // Stoppe die Bewegung der Kugel
                 spriteRenderer.enabled = false; // Deaktivieren des Sprites, um den Soundeffekt zu verdecken
-                collider.enabled = false; // Deaktivieren des Colliders, um weitere Kollisionen zu verhindern
+                capsuleColider.enabled = false; // Deaktivieren des Colliders, um weitere Kollisionen zu verhindern
                 Destroy(gameObject, audioSource.clip.length);
             }
             else
