@@ -135,7 +135,7 @@ public class PlayerShooting : MonoBehaviour
             float angle = startAngle + i * angleStep;
             float bulletDirection = startAngle + i * angleStep + 90; // Berechne den Winkel für die Kugel
             Quaternion fireRotation = firePoint.rotation * Quaternion.Euler(0, 0, angle);
-            Quaternion fireRotationBullet = fireRotation * Quaternion.Euler(0, 0, bulletDirection);
+            
 
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, fireRotation);
             bullet.transform.localScale *= bulletSize; // Skalierung der Kugel basierend auf bulletSize
@@ -153,7 +153,7 @@ public class PlayerShooting : MonoBehaviour
                 else
                 {
                     rb.velocity = fireRotation * Vector2.up * bulletSpeed;
-                    bullet.transform.rotation = fireRotationBullet;
+                    bullet.transform.rotation = fireRotation;
                 }
 
                 bulletScript bulletScript = bullet.GetComponent<bulletScript>();

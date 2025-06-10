@@ -102,6 +102,7 @@ MonoBehaviour:
   accelerationTime: 0.1
   crossHair: {fileID: 0}
   playerUpgrades: {fileID: 6177937468294597026}
+  AutoFire: 0
 --- !u!50 &6026546774694374431
 Rigidbody2D:
   serializedVersion: 4
@@ -149,6 +150,8 @@ MonoBehaviour:
   playerUpgrades: {fileID: 6177937468294597026}
   bulletCount: 1
   bulletSize: 1
+  maxTotalAngle: 90
+  AutoFire: 0
 --- !u!58 &5217856541778694309
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -209,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 5990639972491969554}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.13, y: -4.71, z: 0}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

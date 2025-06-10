@@ -8,13 +8,12 @@ public class bulletScript : MonoBehaviour
     public GameObject ExplosionPrefab;
     public AudioSource audioSource;
     private Rigidbody2D _rb;
-    private SpriteRenderer spriteRenderer; 
+    public SpriteRenderer spriteRenderer; 
     public CapsuleCollider2D collider;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<CapsuleCollider2D>();
         audioSource = GetComponent<AudioSource>();
         Destroy(gameObject, 10f);
@@ -32,7 +31,6 @@ public class bulletScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"Bullet collided with: {collision.gameObject.name}");
         HandleCollision(collision);
     }
 
@@ -52,7 +50,6 @@ public class bulletScript : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Wall"))
         {
-            Debug.Log("Bullet hit a wall.");
             Destroy(gameObject);
         }
     }

@@ -8,6 +8,7 @@ public class SpawnEnemys : MonoBehaviour
     [SerializeField]
     private List<GameObject> enemyPrefabs; // Liste von Gegner-Prefabs für diesen Spawner
 
+
     // Wahrscheinlichkeiten für jeden Gegner für diesen Spawner
     [SerializeField]
     private List<float> spawnProbabilities; // Liste von Wahrscheinlichkeiten (muss mit enemyPrefabs übereinstimmen)
@@ -15,6 +16,8 @@ public class SpawnEnemys : MonoBehaviour
     // Spawn-Positionen für diesen Spawner
     [SerializeField]
     private Transform[] spawnPoints; // Array von Spawn-Punkten für diesen Spawner
+
+    public GameObject player;
 
     // Zeit zwischen Spawns
     [SerializeField]
@@ -36,7 +39,7 @@ public class SpawnEnemys : MonoBehaviour
     void Update()
     {
         // Starte die Boss-Spawn-Coroutine
-        
+
     }
 
     private IEnumerator SpawnEnemiesRepeatedly()
@@ -102,5 +105,58 @@ public class SpawnEnemys : MonoBehaviour
             }
         }
     }
-}
+    public void ManualSpawn(string enemyType)
+    {
+        if (player == null)
+        {
+            Debug.LogError("Spieler-Objekt ist nicht gesetzt!");
+            return;
+        }
 
+        // Abstand vor dem Spieler, wo der Gegner gespawnt wird
+        float spawnDistance = 2.0f;
+
+        // Berechne die Position vor dem Spieler
+        Vector3 spawnPosition = player.transform.position + player.transform.forward * spawnDistance;
+
+        switch (enemyType)
+        {
+            case "Meele":
+                if (enemyPrefabs.Count > 0)
+                {
+                    Instantiate(enemyPrefabs[0], spawnPosition, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.LogWarning("Keine Gegner-Prefabs verfügbar für Meele!");
+                }
+                break;
+
+            case "Ranged":
+                if (enemyPrefabs.Count > 1)
+                {
+                    Instantiate(enemyPrefabs[1], spawnPosition, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.LogWarning("Keine Gegner-Prefabs verfügbar für Ranged!");
+                }
+                break;
+
+            case "Boss":
+                if (EnemyBoss != null)
+                {
+                    Instantiate(EnemyBoss, spawnPosition, Quaternion.identity);
+                }
+                else
+                {
+                    Debug.LogWarning("Kein Boss-Prefab verfügbar!");
+                }
+                break;
+
+            default:
+                Debug.LogWarning($"Unbekannter Spawn-Typ: {enemyType}");
+                break;
+        }
+    }
+}

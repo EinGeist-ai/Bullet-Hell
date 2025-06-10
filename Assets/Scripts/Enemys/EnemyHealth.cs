@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     public float maxHealth = 3f; // Maximum health of the enemy
-    private float currentHealth; // Current health of the enemy
+    public float currentHealth; // Current health of the enemy
     public GameObject ExplosionPrefab;
     public AudioSource audioData; // Reference to the AudioSource component for sound effects
     public CapsuleCollider2D collider; // Reference to the CapsuleCollider2D component
