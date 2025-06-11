@@ -4,58 +4,57 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float maxHealth = 3f; // Maximum health of the enemy
-    public float currentHealth; // Current health of the enemy
-    public GameObject ExplosionPrefab;
-    public AudioSource audioData; // Reference to the AudioSource component for sound effects
-    public CapsuleCollider2D capsuleColider; // Reference to the CapsuleCollider2D component
-    private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component 
-    private BoxCollider2D boxCollider; // Reference to the BoxCollider2D component
-    private EnemyBehaviorShooter movementShooter; // Reference to the movement script if needed
-    private EnemyBehaviorMeele movementMeele; // Reference to the meele movement script if needed
-    private PlayerShooting shooting; // Reference to the shooting script if needed
-    private Rigidbody2D _rb;
+    [Header("Explosion Prefabs")]
     public GameObject explosion1;
     public GameObject explosion2;
     public GameObject explosion3;
 
+    [Header("Refrences")]
+    public GameObject ExplosionPrefab;
+    public AudioSource audioData;
+    public CapsuleCollider2D capsuleColider;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
+    private EnemyBehaviorShooter movementShooter;
+    private EnemyBehaviorMeele movementMeele;
+    private PlayerShooting shooting;
+    private Rigidbody2D _rb;
 
-    public float explosionDelay = 1f; // Delay between explosions
-    public float explosionDelay2 = 0.5f; // Delay between explosions for the second explosion
+    [Header("Default Health")]
+    public float maxHealth = 3f;
+    public float currentHealth;
 
-    // Start is called before the first frame update
+    [Header("Explosion Delay")]
+    public float explosionDelay = 1f; 
+    public float explosionDelay2 = 0.5f;
+
+    
     void Start()
     {
-        currentHealth = maxHealth; // Initialize current health to max health at the start
-        audioData = GetComponent<AudioSource>(); // Correct initialization of the class-level variable
-        capsuleColider = GetComponent<CapsuleCollider2D>(); // Get the CapsuleCollider2D component
-        spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
-        boxCollider = GetComponent<BoxCollider2D>(); // Get the BoxCollider2D component
-        movementShooter = GetComponent<EnemyBehaviorShooter>(); // Get the movement script if it exists
-        movementMeele = GetComponent<EnemyBehaviorMeele>(); // Get the meele movement script if it exists
-        shooting = GetComponent<PlayerShooting>(); // Get the shooting script if it exists
-        _rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentHealth = maxHealth; 
+        audioData = GetComponent<AudioSource>(); 
+        capsuleColider = GetComponent<CapsuleCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        movementShooter = GetComponent<EnemyBehaviorShooter>();
+        movementMeele = GetComponent<EnemyBehaviorMeele>();
+        shooting = GetComponent<PlayerShooting>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage; // Reduce current health by damage amount
+        currentHealth -= damage;
         if (currentHealth <= 0 && CompareTag("Enemy"))
         {
             GameObject newObject = Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
-            newObject.transform.localScale = new Vector3(5f, 5f, -3f); // Set the scale of the explosion
-            Die(); // Call Die method if health is 0 or less
+            newObject.transform.localScale = new Vector3(5f, 5f, -3f);
+            Die();
         }
         else if (currentHealth <= 0 && CompareTag("EnemyBoss"))
         {
-            StartCoroutine(TriggerBossExplosions()); // Start the coroutine for Explosion sequence
-            Die(); // Call Die method if health is 0 or less
+            StartCoroutine(TriggerBossExplosions());
+            Die();
         }
     }
 
@@ -63,50 +62,48 @@ public class EnemyHealth : MonoBehaviour
     {
         // Instantiate explosions with delay
         GameObject newObject1 = Instantiate(ExplosionPrefab, explosion1.transform.position, Quaternion.identity);
-        newObject1.transform.localScale = new Vector3(3f, 3f, -3f); // Set the scale of the explosion
-        audioData.Play(); // Play the explosion sound
-        yield return new WaitForSeconds(explosionDelay); // Wait for the delay
+        newObject1.transform.localScale = new Vector3(3f, 3f, -3f);
+        audioData.Play();
+        yield return new WaitForSeconds(explosionDelay);
 
         GameObject newObject3 = Instantiate(ExplosionPrefab, explosion3.transform.position, Quaternion.identity);
-        newObject3.transform.localScale = new Vector3(3f, 3f, -3f); // Set the scale of the explosion
-        audioData.Play(); // Play the explosion sound again
-        yield return new WaitForSeconds(explosionDelay2); // Wait for the delay
+        newObject3.transform.localScale = new Vector3(3f, 3f, -3f);
+        audioData.Play();
+        yield return new WaitForSeconds(explosionDelay2);
         
 
         GameObject newObject2 = Instantiate(ExplosionPrefab, explosion2.transform.position, Quaternion.identity);
-        newObject2.transform.localScale = new Vector3(10f, 10f, -3f); // Set the scale of the explosion
-        audioData.Play(); // Play the explosion sound again
-        spriteRenderer.enabled = false; // Disable the sprite renderer to hide the enemy
+        newObject2.transform.localScale = new Vector3(10f, 10f, -3f);
+        audioData.Play();
+        spriteRenderer.enabled = false;
     }
 
     private void Die()
     {
-        Debug.Log("Enemy has died!"); // Log death message
-        // Here you can add more logic for enemy death, like playing an animation or dropping loot
-        // For now, we will just destroy the enemy object
-        capsuleColider.enabled = false; // Disable the capsuleColider to prevent further collisions
-        if (boxCollider != null)          // Check if boxCollider exists
+        Debug.Log("Enemy has died!");
+        capsuleColider.enabled = false;
+        if (boxCollider != null)          
         {                               
-            boxCollider.enabled = false; // Disable the box capsuleColider to prevent further collisions
+            boxCollider.enabled = false; 
         }
-        if (shooting != null) // Check if shooting script exists
+        if (shooting != null) 
         {
-            shooting.enabled = false; // Disable the shooting script to prevent further actions
+            shooting.enabled = false;
         }
-        if (movementShooter != null) // Check if movementShooter script exists
+        if (movementShooter != null)
         {
-            movementShooter.enabled = false; // Disable the movement script to prevent further actions
+            movementShooter.enabled = false;
         }
-        if (movementMeele != null) // Check if movementMeele script exists
+        if (movementMeele != null)
         {
-            movementMeele.enabled = false; // Disable the meele movement script to prevent further actions
+            movementMeele.enabled = false;
         }
-        if (spriteRenderer.enabled) // Check if spriteRenderer is enabled
+        if (spriteRenderer.enabled)
         {
-            spriteRenderer.enabled = false; // Disable the sprite renderer to hide the enemy
+            spriteRenderer.enabled = false;
         }
 
-        _rb.velocity = Vector2.zero; // Stop the movement of the enemy
+        _rb.velocity = Vector2.zero;
 
         if (CompareTag ("EnemyBoss"))
         {

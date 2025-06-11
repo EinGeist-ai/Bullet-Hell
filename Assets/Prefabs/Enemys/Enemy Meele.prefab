@@ -152,7 +152,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1, y: 1, z: -1}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2998854657147528125}
@@ -222,13 +222,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9714154c0d43e4db475c76d19aa8d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
-  ExplosionPrefab: {fileID: 7546447012925223696, guid: 82f2b8b668c662943a6e1500826481d0, type: 3}
-  audioData: {fileID: 0}
-  collider: {fileID: 0}
   explosion1: {fileID: 0}
   explosion2: {fileID: 0}
   explosion3: {fileID: 0}
+  ExplosionPrefab: {fileID: 7546447012925223696, guid: 82f2b8b668c662943a6e1500826481d0, type: 3}
+  audioData: {fileID: 0}
+  capsuleColider: {fileID: 0}
+  maxHealth: 2
+  currentHealth: 0
   explosionDelay: 1
   explosionDelay2: 0.8
 --- !u!50 &5697199157725580667
@@ -321,10 +322,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5eab408acc5d54dad55783175b1768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
   ExplosionPrefab: {fileID: 7546447012925223696, guid: 82f2b8b668c662943a6e1500826481d0, type: 3}
   audioData: {fileID: 8581173256225778707}
-  collider: {fileID: 0}
+  capsuleColider: {fileID: 0}
+  damage: 1
 --- !u!82 &8581173256225778707
 AudioSource:
   m_ObjectHideFlags: 0

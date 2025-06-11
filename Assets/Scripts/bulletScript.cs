@@ -3,13 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class bulletScript : MonoBehaviour
 {
+
+    [Header("Bullet Settings")]
     public float speed = 20f;
     public float damage = 1f;
+
+    [Header("Refrences")]
     public GameObject ExplosionPrefab;
     public AudioSource audioSource;
-    private Rigidbody2D _rb;
     public SpriteRenderer spriteRenderer; 
     public CapsuleCollider2D capsuleColider;
+    private Rigidbody2D _rb;
 
     void Start()
     {
@@ -18,7 +22,6 @@ public class bulletScript : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         Destroy(gameObject, 10f);
 
-        // Debugging: Überprüfen, ob AudioSource und Clip vorhanden sind
         if (audioSource == null)
         {
             Debug.LogError("AudioSource-Komponente fehlt!");
@@ -74,14 +77,13 @@ public class bulletScript : MonoBehaviour
                 Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
             }
 
-            // Sound abspielen und sicherstellen, dass es vor der Zerstörung abgespielt wird
             if (audioSource != null && audioSource.clip != null)
             {
                 Debug.Log("Sound wird abgespielt.");
-                audioSource.Play(); // Abspielen des Sounds
-                _rb.velocity = Vector2.zero; // Stoppe die Bewegung der Kugel
-                spriteRenderer.enabled = false; // Deaktivieren des Sprites, um den Soundeffekt zu verdecken
-                capsuleColider.enabled = false; // Deaktivieren des Colliders, um weitere Kollisionen zu verhindern
+                audioSource.Play();
+                _rb.velocity = Vector2.zero;
+                spriteRenderer.enabled = false;
+                capsuleColider.enabled = false;
                 Destroy(gameObject, audioSource.clip.length);
             }
             else

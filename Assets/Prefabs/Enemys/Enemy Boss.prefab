@@ -246,7 +246,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.04, y: 1, z: -1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1654003332716974258}
@@ -320,13 +320,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9714154c0d43e4db475c76d19aa8d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 13068
-  ExplosionPrefab: {fileID: 1987397869976333838, guid: 32043150f936a304985efb3f5068687b, type: 3}
-  audioData: {fileID: 0}
-  collider: {fileID: 0}
   explosion1: {fileID: 7498846288307578560}
   explosion2: {fileID: 1564069885208291113}
   explosion3: {fileID: 8710471450153719778}
+  ExplosionPrefab: {fileID: 1987397869976333838, guid: 32043150f936a304985efb3f5068687b, type: 3}
+  audioData: {fileID: 0}
+  capsuleColider: {fileID: 0}
+  maxHealth: 13068
+  currentHealth: 0
   explosionDelay: 0.3
   explosionDelay2: 0.6
 --- !u!114 &7954046792755679766
@@ -341,16 +342,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0176342874280284fbdf83952238c888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1880557786560490947, guid: 6f409c4583c60cd418a6cf0c09b311ca, type: 3}
-  firePoint: {fileID: 1654003332716974258}
   bulletSpeed: 4
   fireRate: 15
   damage: 6
-  playerUpgrades: {fileID: 0}
   bulletCount: 1
   bulletSize: 4
   maxTotalAngle: 90
-  AutoFire: 0
+  bulletPrefab: {fileID: 1880557786560490947, guid: 6f409c4583c60cd418a6cf0c09b311ca, type: 3}
+  firePoint: {fileID: 1654003332716974258}
+  console: {fileID: 0}
+  playerUpgrades: {fileID: 0}
 --- !u!114 &909722769427647954
 MonoBehaviour:
   m_ObjectHideFlags: 0

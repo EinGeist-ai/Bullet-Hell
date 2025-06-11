@@ -1,25 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; // Für LINQ-Operationen
+using System.Linq;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    public Transform firePoint;
+    [Header("Default Settings")]
     public float bulletSpeed = 2f;
-    public float fireRate = 1f; // Base fire rate
+    public float fireRate = 1f;
     public float damage = 1f;
-    public PlayerUpgrades playerUpgrades;
     public float bulletCount = 1f;
     public float bulletSize = 1f;
-    public float maxTotalAngle = 90f; // Maximum total spread angle for all bullets
-    public bool AutoFire = false; // For player shooting behavior
+    public float maxTotalAngle = 90f;
+    private float currentFireRate = 1;
 
-    private bool canShoot = true;
-    private float currentFireRate = 1; // Adjusted fire rate based on upgrades
-    private GameObject player; // Reference to the player for enemy targeting
+
+    [Header("Refrences")]
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    private GameObject player;
     public GameObject console;
+    public PlayerUpgrades playerUpgrades;
+   
+
+
+    private bool AutoFire = false;
+    private bool canShoot = true;
+    
+    
 
     
     void Start()
@@ -31,36 +39,36 @@ public class PlayerShooting : MonoBehaviour
         }
         else
         {
-            // Find the player GameObject in the scene for enemy targeting
             player = GameObject.FindGameObjectWithTag("Player");
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !console.activeSelf)
-        {
-            AutoFire = !AutoFire; // Toggle AutoFire mode
-        }
+        
 
         if (CompareTag("Player"))
         {
+            if (Input.GetKeyDown(KeyCode.R) && !console.activeSelf)
+            {
+                AutoFire = !AutoFire;
+            }
             ApplyUpgrades();
 
-            // Player-controlled shooting
+            
             if (Input.GetButton("Fire1") && canShoot && !AutoFire && !console.activeSelf)
             {
                 StartCoroutine(ShootCoroutine());
             }
             else if (AutoFire && canShoot && !console.activeSelf)
             {
-                // Auto fire when AutoFire is enabled
+                
                 StartCoroutine(ShootCoroutine());
             }
         }
         else if (CompareTag("EnemyBoss"))
         {
-            // Boss-controlled automatic shooting
+            
             if (canShoot && player != null)
             {
                 StartCoroutine(ShootCoroutine());
@@ -68,7 +76,7 @@ public class PlayerShooting : MonoBehaviour
         }
         else if (CompareTag("Enemy"))
         {
-            // Enemy-controlled automatic shooting
+            
             if (canShoot && player != null)
             {
                 StartCoroutine(ShootCoroutine());
@@ -112,7 +120,7 @@ public class PlayerShooting : MonoBehaviour
         { FireBullets(); }
         else if (CompareTag("EnemyBoss") || CompareTag("Enemy"))
         {
-            // If it's an enemy or boss, target the player
+            
             Vector2 directionToPlayer = (player.transform.position - firePoint.position).normalized;
             FireBullets(directionToPlayer);
         }
@@ -140,7 +148,7 @@ public class PlayerShooting : MonoBehaviour
             
 
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, fireRotation);
-            bullet.transform.localScale *= bulletSize; // Skalierung der Kugel basierend auf bulletSize
+            bullet.transform.localScale *= bulletSize;
 
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)

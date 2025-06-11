@@ -30,7 +30,7 @@ public class PlayerUpgrades : MonoBehaviour
     public int bulletCountIncrease = 1; // Number of bullets for bullet count upgrade
     public float bulletCooldownReduction = 0.5f; // Cooldown reduction for bullet cooldown upgrade
 
-    // Update is called once per frame
+    
     public void ApplyUpgrade(string upgradeName)
     {
         switch (upgradeName)
@@ -64,7 +64,7 @@ public class PlayerUpgrades : MonoBehaviour
                 }
                 else
                 {
-                    speedIncrease += 0.5f; // Increase speed by 0.5 for each upgrade
+                    speedIncrease += 0.5f;
                 }
                 break;
 
@@ -75,7 +75,7 @@ public class PlayerUpgrades : MonoBehaviour
                 }
                 else
                 {
-                    damageIncrease += 1f; // Increase damage by 1 for each upgrade
+                    damageIncrease += 1f;
                 }
                 break;
 
@@ -86,7 +86,7 @@ public class PlayerUpgrades : MonoBehaviour
                 }
                 else
                 {
-                    bulletSpeedIncrease += 5f; // Increase bullet speed by 5 for each upgrade
+                    bulletSpeedIncrease += 5f;
                 }
                 break;
 
@@ -97,7 +97,7 @@ public class PlayerUpgrades : MonoBehaviour
                 }
                 else
                 {
-                    bulletSizeIncrease += 0.1f; // Increase bullet size by 0.1 for each upgrade
+                    bulletSizeIncrease += 0.1f;
                 }
                 break;
              case "BulletPierceUpgrade":
@@ -107,7 +107,7 @@ public class PlayerUpgrades : MonoBehaviour
                 }
                 else
                 {
-                    bulletPierceIncrease += 1f; // Increase bullet pierce by 1 for each upgrade
+                    bulletPierceIncrease += 1f;
                 }
                 break;
 

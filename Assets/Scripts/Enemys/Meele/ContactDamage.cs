@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class ContactDamage : MonoBehaviour
 {
+
+    [Header("References")]
     private Rigidbody2D rb;
-    public float damage = 1f; // Damage amount
     public GameObject ExplosionPrefab;
     public AudioSource audioData;
-    public CapsuleCollider2D capsuleColider; // Reference to the CapsuleCollider2D component
+    public CapsuleCollider2D capsuleColider;
     private SpriteRenderer spriteRenderer;
 
-    // Start is called before the first frame update
+    [Header("Default Damage")]
+    public float damage = 1f;
+    
+    
+
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         audioData = GetComponent<AudioSource>();
-        capsuleColider = GetComponent<CapsuleCollider2D>(); // Get the CapsuleCollider2D component
-        spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
+        capsuleColider = GetComponent<CapsuleCollider2D>(); 
+        spriteRenderer = GetComponent<SpriteRenderer>(); 
     }
 
-    // OnCollisionEnter2D is called when this capsuleColider/rigidbody has begun touching another rigidbody/capsuleColider
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
@@ -33,13 +39,13 @@ public class ContactDamage : MonoBehaviour
             {
                 audioData.Play();
                 GameObject newObject = Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
-                newObject.transform.localScale = new Vector3(5f, 5f, -1f); // Set the scale of the explosion
+                newObject.transform.localScale = new Vector3(5f, 5f, -1f); 
 
 
             }
-            spriteRenderer.enabled = false; // Disable the sprite renderer to hide the enemy
-            capsuleColider.enabled = false; // Disable the capsuleColider to prevent further collisions
-            Destroy(gameObject, audioData.clip.length); // Destroy the enemy after dealing damage
+            spriteRenderer.enabled = false; 
+            capsuleColider.enabled = false; 
+            Destroy(gameObject, audioData.clip.length);
         }
     }
 }

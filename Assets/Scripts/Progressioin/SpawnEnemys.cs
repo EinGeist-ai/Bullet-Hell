@@ -4,52 +4,53 @@ using UnityEngine;
 
 public class SpawnEnemys : MonoBehaviour
 {
-    // Liste für Gegner-Prefabs für diesen Spawner
+    [Header("Enemy Prefabs")]
     [SerializeField]
-    private List<GameObject> enemyPrefabs; // Liste von Gegner-Prefabs für diesen Spawner
+    private List<GameObject> enemyPrefabs;
 
 
-    // Wahrscheinlichkeiten für jeden Gegner für diesen Spawner
+    [Header("Spawn Probabilities")]
     [SerializeField]
-    private List<float> spawnProbabilities; // Liste von Wahrscheinlichkeiten (muss mit enemyPrefabs übereinstimmen)
+    private List<float> spawnProbabilities;
 
-    // Spawn-Positionen für diesen Spawner
+    [Header("Spawn Points")]
     [SerializeField]
-    private Transform[] spawnPoints; // Array von Spawn-Punkten für diesen Spawner
+    private Transform[] spawnPoints; 
 
+    [Header("Game Objects")]
     public GameObject player;
-
-    // Zeit zwischen Spawns
-    [SerializeField]
-    private float spawnInterval = 1.5f; // Zeit in Sekunden zwischen Spawns
-    private float spawnIntervalFixed = 1.5f; // Timer für den Spawn
-    public float bossTimer = 0f;
-
-    public bool spawningEnabled = true; // Flag, um das Spawnen zu aktivieren/deaktivieren
-
     public GameObject EnemyBoss;
 
+    [Header("Spawn Settings")]
+    [SerializeField]
+    private float spawnInterval = 1.5f; 
+    private float spawnIntervalFixed = 1.5f; 
+    public float bossTimer = 0f;
     public float difficulty = 0.02f;
+    public bool spawningEnabled = true;
+    
+    
 
     void Start()
     {
-        // Starte die Spawn-Coroutine
+        
         StartCoroutine(SpawnEnemiesRepeatedly());
         StartCoroutine(SpawnBoss());
     }
 
-    void Update()
-    {
-        
-    }
+
     private IEnumerator SpawnEnemiesRepeatedly()
     {
         while (true)
         {
-                SpawnEnemyWithProbability();
-                yield return new WaitForSeconds(spawnInterval); // Warte die festgelegte Zeit
-                difficulty += 0.01f; // Erhöhe die Schwierigkeit (kann angepasst werden)
-                spawnInterval = Mathf.Max(0.0001f, spawnIntervalFixed / difficulty); // Verringere das Intervall, um die Schwierigkeit zu erhöhen
+            SpawnEnemyWithProbability();
+            yield return new WaitForSeconds(spawnInterval); 
+            difficulty += 0.01f; 
+            spawnInterval = Mathf.Max(0.0001f, spawnIntervalFixed / difficulty);
+            if (!spawningEnabled)
+            {
+                break;
+            }
         }
     }
 
@@ -102,9 +103,13 @@ public class SpawnEnemys : MonoBehaviour
                 {
 
                     Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                    Instantiate(EnemyBoss, spawnPoint.position, spawnPoint.rotation); // Angenommen, der Boss ist das erste Element in enemyPrefabs
+                    Instantiate(EnemyBoss, spawnPoint.position, spawnPoint.rotation);
                     bossTimer = 0f;
                 }
+            }
+            if (!spawningEnabled)
+            {
+                break;
             }
         }
     }
@@ -116,15 +121,14 @@ public class SpawnEnemys : MonoBehaviour
             return;
         }
 
-        // Abstand vor dem Spieler, wo der Gegner gespawnt wird
-        float spawnDistance = 2.0f;
+        float spawnDistance = 5.0f;
 
-        // Berechne die Position vor dem Spieler
         Vector3 spawnPosition = player.transform.position + player.transform.forward * spawnDistance;
+        spawnPosition.z = -1;
 
         switch (enemyType)
         {
-            case "Meele":
+            case "meele":
                 if (enemyPrefabs.Count > 0)
                 {
                     Instantiate(enemyPrefabs[0], spawnPosition, Quaternion.identity);
@@ -135,7 +139,7 @@ public class SpawnEnemys : MonoBehaviour
                 }
                 break;
 
-            case "Ranged":
+            case "ranged":
                 if (enemyPrefabs.Count > 1)
                 {
                     Instantiate(enemyPrefabs[1], spawnPosition, Quaternion.identity);
@@ -146,7 +150,7 @@ public class SpawnEnemys : MonoBehaviour
                 }
                 break;
 
-            case "Boss":
+            case "boss":
                 if (EnemyBoss != null)
                 {
                     Instantiate(EnemyBoss, spawnPosition, Quaternion.identity);
@@ -165,17 +169,18 @@ public class SpawnEnemys : MonoBehaviour
 
     public void ToggleSpawning()
     {
-        spawningEnabled = !spawningEnabled; // Umschalten des Spawning-Flags
+        spawningEnabled = !spawningEnabled;
 
         if (spawningEnabled)
         {
             StartCoroutine(SpawnEnemiesRepeatedly());
-            StartCoroutine(SpawnBoss()); // Starte die Boss-Spawning Coroutine, falls sie nicht bereits läuft
+            StartCoroutine(SpawnBoss());
         }
         else
         {
             StopCoroutine(SpawnEnemiesRepeatedly());
-            StopCoroutine(SpawnBoss()); // Stoppe die Boss-Spawning Coroutine
+            StopCoroutine(SpawnBoss());
+
         }
     }
 }

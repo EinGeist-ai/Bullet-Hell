@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7063759702202434445}
@@ -84,8 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4f189800de4714c8ad1766a9e8e625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerUpgrades: {fileID: 6177937468294597026}
   maxHealth: 10
+  playerUpgrades: {fileID: 6177937468294597026}
 --- !u!114 &3916152414486566971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,9 +100,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   accelerationTime: 0.1
+  AutoFire: 0
   crossHair: {fileID: 0}
   playerUpgrades: {fileID: 6177937468294597026}
-  AutoFire: 0
+  console: {fileID: 0}
 --- !u!50 &6026546774694374431
 Rigidbody2D:
   serializedVersion: 4
@@ -142,16 +143,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0176342874280284fbdf83952238c888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 8678721076108802525, guid: 2b015394a684e7d438ba4d1c4036f6a5, type: 3}
-  firePoint: {fileID: 7173620879604347723}
   bulletSpeed: 20
   fireRate: 1
   damage: 1
-  playerUpgrades: {fileID: 6177937468294597026}
   bulletCount: 1
   bulletSize: 1
   maxTotalAngle: 90
-  AutoFire: 0
+  bulletPrefab: {fileID: 8678721076108802525, guid: 2b015394a684e7d438ba4d1c4036f6a5, type: 3}
+  firePoint: {fileID: 7173620879604347723}
+  console: {fileID: 0}
+  playerUpgrades: {fileID: 6177937468294597026}
 --- !u!58 &5217856541778694309
 CircleCollider2D:
   m_ObjectHideFlags: 0

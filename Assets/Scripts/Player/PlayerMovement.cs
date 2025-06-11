@@ -2,16 +2,19 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    [Header("Player Movement Settings")]
     public float speed = 5f;
     public float accelerationTime = 0.1f;
-    public GameObject crossHair;
+    public bool AutoFire = false;
 
-    public PlayerUpgrades playerUpgrades; // Reference to the upgrade script if needed, can be set in the inspector
+    [Header("References")]
+    public GameObject crossHair;
+    public PlayerUpgrades playerUpgrades;
     private Rigidbody2D body;
     private Vector2 movementInput;
     private Vector2 currentVelocity;
     private Quaternion playerRotation;
-    public bool AutoFire = false; // For player shooting behavior
     public GameObject console;
 
     void Start()
@@ -35,11 +38,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R) && !console.activeSelf)
         {
-            AutoFire = !AutoFire; // Toggle AutoFire mode
+            AutoFire = !AutoFire;
         }
         if (playerUpgrades != null && playerUpgrades.hasSpeedUpgrade)
         {
-            speed = playerUpgrades.speedIncrease; // Adjust speed based on flat addition
+            speed = playerUpgrades.speedIncrease;
         }
         if(!console.activeSelf)
         {
@@ -64,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             RotateTowardsEnemy();
-            //AutoFireAtEnemy();
         }
     }
 
@@ -94,7 +96,6 @@ public class PlayerMovement : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
             playerRotation = Quaternion.Euler(0f, 0f, angle);
 
-            // Smooth rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, playerRotation, Time.deltaTime * 20f);
         }
     }
@@ -131,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotateTowardsMouseOnly()
     {
-        if (!AutoFire) // Sicherstellen, dass die Rotation zur Maus nur bei deaktiviertem AutoFire erfolgt
+        if (!AutoFire)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = mousePosition - body.position;
@@ -139,7 +140,6 @@ public class PlayerMovement : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
             playerRotation = Quaternion.Euler(0f, 0f, angle);
 
-            // Smooth rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, playerRotation, Time.deltaTime * 20f);
         }
     }

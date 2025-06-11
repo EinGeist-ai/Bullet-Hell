@@ -1,21 +1,27 @@
 using UnityEngine;
 using TMPro;
-using System.Linq; // LINQ für Select hinzufügen
-
+using System.Linq;
 public class Console : MonoBehaviour
 {
-    [SerializeField] private TMP_Text textObject;
 
+    [Header("TMP Objects")]
+    public TMP_Text textObject;
     public TMP_InputField tMP_InputField;
+    public TMP_Text tMP_Text;
+
+    [Header("Console Variables")]
     public GameObject ConsoleObject;
     public bool ConsoleActive = false;
-
-    public TMP_Text tMP_Text
-
-    [SerializeField] private SpawnEnemys spawnScript; // Reference to SpawnEnemys script
+    public GameObject EnemySpawner; 
+    public SpawnEnemys spawnScript; 
 
     private void Start()
     {
+
+        EnemySpawner = GameObject.Find("ENEMY SPAWNER"); 
+        spawnScript = EnemySpawner.GetComponent<SpawnEnemys>(); 
+
+
 
         if (ConsoleObject == null)
         {
@@ -71,16 +77,15 @@ public class Console : MonoBehaviour
     private void LogTextObjectContent()
     {
         string text = textObject.text;
-        checkCommand(text); // Überprüfe den Befehl
-        tMP_InputField.text = ""; // Leere das Eingabefeld nach dem Senden des Befehls
-        ConsoleObject.SetActive(false); // Deaktiviere das Eingabefeld nach dem Senden des Befehls
-        ConsoleActive = false; // Setze ConsoleActive auf false, um die Konsole zu schließen
+        checkCommand(text);
+        tMP_InputField.text = "";
+        ConsoleObject.SetActive(false);
+        ConsoleActive = false;
     }
-
 
     private void checkCommand(string command)
     {
-        // Entferne unsichtbare Zeichen wie Zero-Width Space
+        
         command = command.Replace("\u200B", "").Trim();
 
         string firstWord = command.Split(' ')[0];
@@ -91,18 +96,63 @@ public class Console : MonoBehaviour
                 Spawn(command);
                 break;
             case "help":
-                Debug.Log("Available commands: clear, help"); // Zeigt verfügbare Befehle an
+                Debug.Log("Available commands: spawn <type>, help, spawnToggle, kill, killself"); 
                 break;
             case "spawnToggle":
                 spawnScript.ToggleSpawning();
-                Debug.Log("Spawn toggled."); // Beispielausgabe
+                Debug.Log("Spawn toggled.");
+                break;
+            case "kill":
+                KillAllEnemies();
+                break;
+            case "killself":
+                KillSelf();
                 break;
             default:
-                Debug.Log("Unknown command: '" + firstWord + "'"); // Zeigt unbekannte Befehle an
+                Debug.Log("Unknown command: '" + firstWord + "'"); 
                 break;
         }
     }
 
+    private void KillSelf()
+    {
+        PlayerHealth playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(69420);
+        }
+        else
+        {
+            Debug.LogError("PlayerHealth component not found on Player object.");
+        }
+    }
+
+    private void KillAllEnemies()
+    {
+        
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(69420);
+            }
+        }
+        GameObject[] enemiesBoss = GameObject.FindGameObjectsWithTag("EnemyBoss");
+
+        foreach (GameObject enemyBoss in enemiesBoss)
+        {
+            EnemyHealth enemyHealth = enemyBoss.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(69420);
+            }
+        }
+
+        Debug.Log("All enemies have been killed.");
+    }
 
     private void Spawn(string command)
     {
@@ -111,19 +161,22 @@ public class Console : MonoBehaviour
         switch (secondWord)
         {
             case "meele":
-                // Hier den Code zum Spawnen eines Meele-Gegners einfügen
-                Debug.Log("Spawning Meele enemy..."); // Beispielausgabe
+                
+                spawnScript.ManualSpawn("meele"); 
+                Debug.Log("Spawning Meele enemy..."); 
                 break;
             case "ranged":
-                // Hier den Code zum Spawnen eines Ranged-Gegners einfügen
-                Debug.Log("Spawning Ranged enemy..."); // Beispielausgabe
+                
+                spawnScript.ManualSpawn("ranged"); 
+                Debug.Log("Spawning Ranged enemy..."); 
                 break;
             case "boss":
-                // Hier den Code zum Spawnen eines Boss-Gegners einfügen
-                Debug.Log("Spawning Boss enemy..."); // Beispielausgabe
+                
+                spawnScript.ManualSpawn("boss"); 
+                Debug.Log("Spawning Boss enemy...");
                 break;
             default:
-                Debug.Log("Unknown spawn type: " + secondWord); // Zeigt unbekannte Typen an
+                Debug.Log("Unknown spawn type: " + secondWord); 
                 break;
         }
 

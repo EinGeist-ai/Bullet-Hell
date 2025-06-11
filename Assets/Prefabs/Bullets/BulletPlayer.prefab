@@ -136,7 +136,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8134156265749311951}
@@ -159,7 +159,7 @@ MonoBehaviour:
   ExplosionPrefab: {fileID: 7546447012925223696, guid: 82f2b8b668c662943a6e1500826481d0, type: 3}
   audioSource: {fileID: 0}
   spriteRenderer: {fileID: 4865880247924595818}
-  collider: {fileID: 0}
+  capsuleColider: {fileID: 0}
 --- !u!50 &586877426686645530
 Rigidbody2D:
   serializedVersion: 4
