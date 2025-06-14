@@ -42,6 +42,13 @@ public class EnemyHealth : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
+    public void setHealth(float health)
+    {
+        maxHealth = health;
+        currentHealth = health;
+    }
+
+
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;

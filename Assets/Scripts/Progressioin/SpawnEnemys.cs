@@ -28,8 +28,9 @@ public class SpawnEnemys : MonoBehaviour
     public float bossTimer = 0f;
     public float difficulty = 0.02f;
     public bool spawningEnabled = true;
-    
-    
+    public float spawnDistance = 200f;
+
+
 
     void Start()
     {
@@ -81,7 +82,15 @@ public class SpawnEnemys : MonoBehaviour
             {
                 // Wähle einen zufälligen Spawn-Punkt
                 Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                Instantiate(enemyPrefabs[i], spawnPoint.position, spawnPoint.rotation);
+                GameObject enemy = Instantiate(enemyPrefabs[i], spawnPoint.position, spawnPoint.rotation);
+
+                // Setze die Gesundheit relativ zur Schwierigkeit
+                EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.setHealth(difficulty * 100); // Beispiel: Gesundheit = Schwierigkeit * 100
+                }
+
                 return;
             }
         }
@@ -101,9 +110,16 @@ public class SpawnEnemys : MonoBehaviour
 
                 if (bossTimer >= 25f)
                 {
-
                     Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                    Instantiate(EnemyBoss, spawnPoint.position, spawnPoint.rotation);
+                    GameObject boss = Instantiate(EnemyBoss, spawnPoint.position, spawnPoint.rotation);
+
+                    // Setze die Gesundheit des Bosses relativ zur Schwierigkeit
+                    EnemyHealth bossHealth = boss.GetComponent<EnemyHealth>();
+                    if (bossHealth != null)
+                    {
+                        bossHealth.setHealth(difficulty * 500); // Beispiel: Boss-Gesundheit = Schwierigkeit * 500
+                    }
+
                     bossTimer = 0f;
                 }
             }
@@ -113,6 +129,7 @@ public class SpawnEnemys : MonoBehaviour
             }
         }
     }
+
     public void ManualSpawn(string enemyType)
     {
         if (player == null)
@@ -121,10 +138,16 @@ public class SpawnEnemys : MonoBehaviour
             return;
         }
 
-        float spawnDistance = 5.0f;
+        // Berechne die Spawn-Position relativ zur Spielerposition
+        Vector3 spawnDirection = player.transform.forward; // Spawn in Blickrichtung des Spielers
+        Vector3 spawnPosition = player.transform.position + spawnDirection;
 
-        Vector3 spawnPosition = player.transform.position + player.transform.forward * spawnDistance;
-        spawnPosition.z = -1;
+        // Setze die x-Koordinate relativ zur Spielerposition auf 20
+        spawnPosition.x = player.transform.position.x + 20;
+
+        Debug.Log($"Spawning {enemyType} at position: {spawnPosition}");
+        Debug.Log($"Spawn Direction: {spawnDirection}");
+        Debug.Log($"Spawn Distance: {spawnDistance}");
 
         switch (enemyType)
         {

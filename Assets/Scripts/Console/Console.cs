@@ -13,13 +13,16 @@ public class Console : MonoBehaviour
     public GameObject ConsoleObject;
     public bool ConsoleActive = false;
     public GameObject EnemySpawner; 
-    public SpawnEnemys spawnScript; 
+    public SpawnEnemys spawnScript;
+    public GameObject levelup;
+    public LevelUP levelupscript;
 
     private void Start()
     {
 
         EnemySpawner = GameObject.Find("ENEMY SPAWNER"); 
         spawnScript = EnemySpawner.GetComponent<SpawnEnemys>(); 
+        levelup = GameObject.Find("LevelUp");
 
 
 
@@ -107,6 +110,10 @@ public class Console : MonoBehaviour
                 break;
             case "killself":
                 KillSelf();
+                break;
+            case "levelup":
+                levelupscript = levelup.GetComponent<LevelUP>();
+                levelupscript.TriggerLevelUp();
                 break;
             default:
                 Debug.Log("Unknown command: '" + firstWord + "'"); 
