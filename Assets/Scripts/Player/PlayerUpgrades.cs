@@ -53,7 +53,7 @@ public class PlayerUpgrades : MonoBehaviour
                 }
                 else
                 {
-                    shieldRegeneration -= 5f;
+                    shieldRegeneration -= 0.5f;
                 }
                 break;
 

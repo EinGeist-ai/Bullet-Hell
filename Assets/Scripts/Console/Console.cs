@@ -99,7 +99,7 @@ public class Console : MonoBehaviour
                 Spawn(command);
                 break;
             case "help":
-                Debug.Log("Available commands: spawn <type>, help, spawnToggle, kill, killself"); 
+                Debug.Log("Available commands: spawn <type>, help, spawnToggle, kill, killself, levelup"); 
                 break;
             case "spawnToggle":
                 spawnScript.ToggleSpawning();

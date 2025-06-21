@@ -40,15 +40,12 @@ public class PlayerMovement : MonoBehaviour
         {
             AutoFire = !AutoFire;
         }
-        if (playerUpgrades != null && playerUpgrades.hasSpeedUpgrade)
-        {
-            speed = playerUpgrades.speedIncrease;
-        }
         if(!console.activeSelf)
         {
             MoveCrosshair(); 
         }
-        
+        ApplyUpgrades();
+
 
         float moveX = 0f;
         float moveY = 0f;
@@ -141,6 +138,17 @@ public class PlayerMovement : MonoBehaviour
             playerRotation = Quaternion.Euler(0f, 0f, angle);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, playerRotation, Time.deltaTime * 20f);
+        }
+    }
+
+    private void ApplyUpgrades()
+    {
+        if (playerUpgrades != null)
+        {
+            if (playerUpgrades.hasSpeedUpgrade)
+            {
+                speed = playerUpgrades.speedIncrease;
+            }
         }
     }
 }

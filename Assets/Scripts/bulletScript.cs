@@ -14,9 +14,28 @@ public class bulletScript : MonoBehaviour
     public SpriteRenderer spriteRenderer; 
     public CapsuleCollider2D capsuleColider;
     private Rigidbody2D _rb;
+    private GameObject player;
+    private PlayerUpgrades playerUpgrades;
+    private float localPiercing = 0;
 
     void Start()
     {
+        
+        
+            player = GameObject.FindGameObjectWithTag("Player");
+            playerUpgrades = player.GetComponent<PlayerUpgrades>();
+            if (playerUpgrades != null)
+            {
+                if (playerUpgrades.hasBulletPierceUpgrade)
+                {
+                    localPiercing = playerUpgrades.bulletPierceIncrease;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("PlayerUpgrades-Komponente nicht gefunden!");
+            }
+
         _rb = GetComponent<Rigidbody2D>();
         capsuleColider = GetComponent<CapsuleCollider2D>();
         audioSource = GetComponent<AudioSource>();
@@ -32,26 +51,28 @@ public class bulletScript : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        HandleCollision(collision);
+        HandleTrigger(other);
     }
 
-    private void HandleCollision(Collision2D collision)
+    private void HandleTrigger(Collider2D other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            ApplyDamage<PlayerHealth>(collision.gameObject, damage);
+            ApplyDamage<PlayerHealth>(other.gameObject, damage);
         }
-        else if (collision.gameObject.CompareTag("Enemy"))
+        else if (other.gameObject.CompareTag("Enemy"))
         {
-            ApplyDamage<EnemyHealth>(collision.gameObject, damage);
+            ApplyDamage<EnemyHealth>(other.gameObject, damage);
+            localPiercing -= 1;
         }
-        else if (collision.gameObject.CompareTag("EnemyBoss"))
+        else if (other.gameObject.CompareTag("EnemyBoss"))
         {
-            ApplyDamage<EnemyHealth>(collision.gameObject, damage);
+            ApplyDamage<EnemyHealth>(other.gameObject, damage);
+            localPiercing -= 1;
         }
-        else if (collision.gameObject.CompareTag("Wall"))
+        else if (other.gameObject.CompareTag("Wall"))
         {
             Destroy(gameObject);
         }
@@ -77,19 +98,39 @@ public class bulletScript : MonoBehaviour
                 Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
             }
 
-            if (audioSource != null && audioSource.clip != null)
+            if (localPiercing <= 0 && !target.CompareTag("Player") && !target.CompareTag("Wall"))
             {
-                Debug.Log("Sound wird abgespielt.");
-                audioSource.Play();
-                _rb.velocity = Vector2.zero;
-                spriteRenderer.enabled = false;
-                capsuleColider.enabled = false;
-                Destroy(gameObject, audioSource.clip.length);
+                if (audioSource != null && audioSource.clip != null)
+                {
+                    Debug.Log("Sound wird abgespielt.");
+                    audioSource.Play();
+                    _rb.velocity = Vector2.zero;
+                    spriteRenderer.enabled = false;
+                    capsuleColider.enabled = false;
+                    Destroy(gameObject, audioSource.clip.length);
+                }
+                else
+                {
+                    Debug.LogWarning("AudioSource oder Audio-Clip fehlt, Sound konnte nicht abgespielt werden.");
+                    Destroy(gameObject);
+                }
             }
-            else
+            else if (target.CompareTag("Player") || target.CompareTag("Wall"))
             {
-                Debug.LogWarning("AudioSource oder Audio-Clip fehlt, Sound konnte nicht abgespielt werden.");
-                Destroy(gameObject);
+                if (audioSource != null && audioSource.clip != null)
+                {
+                    Debug.Log("Sound wird abgespielt.");
+                    audioSource.Play();
+                    _rb.velocity = Vector2.zero;
+                    spriteRenderer.enabled = false;
+                    capsuleColider.enabled = false;
+                    Destroy(gameObject, audioSource.clip.length);
+                }
+                else
+                {
+                    Debug.LogWarning("AudioSource oder Audio-Clip fehlt, Sound konnte nicht abgespielt werden.");
+                    Destroy(gameObject);
+                }
             }
         }
         else

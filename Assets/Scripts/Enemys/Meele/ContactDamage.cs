@@ -27,9 +27,9 @@ public class ContactDamage : MonoBehaviour
     }
 
     
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+        PlayerHealth playerHealth = other.gameObject.GetComponent<PlayerHealth>();
 
         if (playerHealth != null)
         {

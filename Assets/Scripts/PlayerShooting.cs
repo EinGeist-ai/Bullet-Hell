@@ -105,11 +105,16 @@ public class PlayerShooting : MonoBehaviour
 
         if (playerUpgrades.hasBulletCooldownUpgrade)
         {
-            currentFireRate = Mathf.Max(0f, playerUpgrades.bulletCooldownReduction);
+            currentFireRate = Mathf.Max(0.01f, playerUpgrades.bulletCooldownReduction);
         }
         else
         {
             currentFireRate = fireRate;
+        }
+
+        if (playerUpgrades.hasBulletSizeUpgrade)
+        {
+            bulletSize = Mathf.Max(0.1f, playerUpgrades.bulletSizeIncrease);
         }
     }
 
@@ -132,9 +137,10 @@ public class PlayerShooting : MonoBehaviour
     {
         int count = Mathf.Max(1, Mathf.RoundToInt(bulletCount));
 
-        // Berechne den Winkel für die Verteilung basierend auf maxTotalAngle
-        float angleStep = count > 1 ? maxTotalAngle / (count - 1) : 0f; // Abstand zwischen den Kugeln in Grad
-        float startAngle = -maxTotalAngle / 2; // Startwinkel für die erste Kugel
+        // Berechne den Winkel fÃ¼r die Verteilung basierend auf einem festen Winkel von 10Â° und maxTotalAngle
+        float angleStep = Mathf.Min(10f, maxTotalAngle / Mathf.Max(1, count - 1)); // Abstand zwischen den Kugeln in Grad
+        float totalAngle = angleStep * (count - 1); // Gesamter Winkel basierend auf der Anzahl der Kugeln
+        float startAngle = -totalAngle / 2; // Startwinkel fÃ¼r die erste Kugel
         if (count == 1)
         {
             startAngle = 0f; // Wenn nur eine Kugel, dann kein Winkelversatz
@@ -143,9 +149,7 @@ public class PlayerShooting : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             float angle = startAngle + i * angleStep;
-            float bulletDirection = startAngle + i * angleStep + 90; // Berechne den Winkel für die Kugel
             Quaternion fireRotation = firePoint.rotation * Quaternion.Euler(0, 0, angle);
-            
 
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, fireRotation);
             bullet.transform.localScale *= bulletSize;

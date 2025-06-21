@@ -8,20 +8,20 @@ public class TagAdder : MonoBehaviour
     {
         transform.parent.tag = "Untagged";
     }
-    [SerializeField] private string tagToAdd; // Der Tag, der hinzugefügt werden soll
+    [SerializeField] private string tagToAdd; // Der Tag, der hinzugefï¿½gt werden soll
 
     // Wird aufgerufen, wenn eine Kollision mit einem Collider stattfindet
     private void OnCollisionEnter(Collision collision)
     {
-        // Überprüfen, ob das übergeordnete Objekt existiert
+        // ï¿½berprï¿½fen, ob das ï¿½bergeordnete Objekt existiert
         if (transform.parent != null)
         {
-            // Den angegebenen Tag dem übergeordneten Objekt hinzufügen
+            // Den angegebenen Tag dem ï¿½bergeordneten Objekt hinzufï¿½gen
             transform.parent.tag = tagToAdd;
         }
         else
         {
-            Debug.LogWarning("Kein übergeordnetes Objekt vorhanden, Tag konnte nicht hinzugefügt werden.");
+            Debug.LogWarning("Kein ï¿½bergeordnetes Objekt vorhanden, Tag konnte nicht hinzugefï¿½gt werden.");
         }
     }
 }
