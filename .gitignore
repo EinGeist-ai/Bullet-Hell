@@ -363,15 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Not essential files
-/Library
-/Temp
-/UserSettings
-/ProjectSettings
-/Bullet1.png
-/Bullet2.png
-/Bullet3.png
-/Bullet4.png
-/Bullet5.png
+/library
 
 # Krita Backup Dateien
 .kra 

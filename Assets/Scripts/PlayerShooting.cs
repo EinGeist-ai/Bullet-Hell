@@ -116,6 +116,10 @@ public class PlayerShooting : MonoBehaviour
         {
             bulletSize = Mathf.Max(0.1f, playerUpgrades.bulletSizeIncrease);
         }
+        else
+        {
+            bulletSize = 1f; // Setze auf Standardwert, wenn Upgrade nicht vorhanden ist
+        }
     }
 
     private IEnumerator ShootCoroutine()
